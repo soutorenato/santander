@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Golden Rules</title>
+
+<style>
+  :root{
+    /* FUNDO BRANCO */
+    --bg:#ffffff;
+
+    --gold:#d6b25b;
+    --gold-2:#f0d58a;
+
+    --text:#111111;
+    --muted: rgba(0,0,0,.68);
+
+    /* CARD */
+    --card: rgba(255,255,255,.96);
+    --stroke-darkred: #7a0c0c; /* ✅ contorno vermelho escuro */
+
+    --radius: 22px;
+    --shadow: 0 10px 26px rgba(0,0,0,.10);
+
+    --max: 1250px;
+
+    /* ✅ altura fixa padrão do card */
+    --cardH: 150px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+  }
+
+  /* ✅ Top (AGORA PRETO COM TEXTO BRANCO) */
+  .topbar{
+    position: sticky;
+    top:0;
+    z-index: 10;
+    background: #000; /* ✅ fundo preto */
+    border-bottom: 1px solid rgba(255,255,255,.14);
+    backdrop-filter: none; /* ✅ remove blur */
+  }
+  
+  .topbar-inner{
+  display: flex;
+  align-items: center;      /* centraliza vertical */
+  justify-content: center;  /* centraliza horizontal */
+  height: 56px;             /* altura do header */
+  padding: 0 16px;
+  }
+
+  /* ✅ Hero (capa) SEM BRANQUICADO */
+  .hero{
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    background: url("D3B290D2-3975-4DA8-A876-744F0B243380.png");
+    background-position:center;
+    background-size:cover;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+
+  /* ✅ overlay escuro leve (não “lava” a imagem) */
+  .hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.22));
+    pointer-events:none;
+  }
+
+  @media (max-width: 720px){
+    .hero{ height: 220px; }
+  }
+
+  .wrap{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 22px 16px 56px;
+  }
+
+  /* GRID RESPONSIVO:
+     - mobile: 2
+     - depois: 3, 4
+     - desktop: 5
+  */
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 1200px){
+    .grid{ grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 980px){
+    .grid{ grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 680px){
+    .grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ✅ Card (altura igual + sem espaço vazio) */
+  .card{
+    height: var(--cardH);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(600px 260px at 30% 0%, rgba(214,178,91,.10), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.94));
+    border: 2px solid var(--stroke-darkred); /* ✅ vermelho escuro */
+    box-shadow: var(--shadow);
+    padding: 16px;
+    cursor:pointer;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    outline: none;
+    user-select:none;
+
+    display:flex;
+    flex-direction:column;
+
+    /* ✅ elimina o “vazio” e centraliza o conteúdo */
+    justify-content:center;
+    gap: 10px;
+
+    overflow:hidden;
+  }
+  .card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(0,0,0,.14);
+    border-color: #5f0a0a;
+  }
+
+  /* ✅ Cabeçalho (número + título) */
+  .head{
+    display:flex;
+    align-items:flex-start;
+    gap: 12px;
+    margin: 0;
+  }
+
+  .n{
+    font-weight: 1000;
+    color: var(--stroke-darkred); /* ✅ vermelho escuro */
+    font-size: 22px;
+    line-height:1;
+    min-width: 18px;
+    margin-top: 2px;
+  }
+
+  /* ✅ Título do card: caber bonito e responsivo */
+  .title{
+    margin:0;
+    font-weight: 900;
+    letter-spacing: .1px;
+    line-height: 1.22;
+    color: #111;
+
+    /* ✅ tamanho confortável */
+    font-size: 15px;
+
+    /* ✅ estética: limita até 4 linhas, sem “vazio” feio */
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Ajustes finos por viewport */
+  @media (max-width: 1200px){
+    :root{ --cardH: 152px; }
+  }
+  @media (max-width: 980px){
+    :root{ --cardH: 154px; }
+  }
+  @media (max-width: 680px){
+    :root{ --cardH: 142px; }
+    .card{ padding: 14px; border-radius: 20px; }
+    .n{ font-size: 20px; }
+    .title{ font-size: 14.5px; -webkit-line-clamp: 4; }
+  }
+
+  /* ===== MODAL (mantido) ===== */
+  .overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.72);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    z-index: 999;
+  }
+  .overlay.open{ display:flex; }
+
+  .modal{
+    width: min(980px, 100%);
+    max-height: min(86vh, 860px);
+    overflow: auto;
+    border-radius: 22px;
+    background:
+      radial-gradient(700px 320px at 20% 0%, rgba(214,178,91,.12), transparent 60%),
+      linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,.52));
+    border: 1px solid rgba(214,178,91,.26);
+    box-shadow: 0 18px 60px rgba(0,0,0,.55);
+    color: #fff;
+  }
+
+  .modal-head{
+    position: sticky;
+    top: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.78), rgba(0,0,0,.40));
+    border-bottom: 1px solid rgba(214,178,91,.16);
+    padding: 14px 16px;
+    display:flex;
+    align-items:flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .modal-title{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .nbox{
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display:grid;
+    place-items:center;
+    font-weight: 1000;
+    color:#1a0a00;
+    background: linear-gradient(135deg, var(--gold-2), var(--gold));
+    flex: 0 0 auto;
+  }
+  .modal-title h2{
+    margin:0;
+    font-size: 18px;
+    line-height: 1.25;
+    letter-spacing: .15px;
+  }
+  .modal-title .small{
+    display:block;
+    margin-top: 6px;
+    color: rgba(255,255,255,.78);
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .close{
+    border: 1px solid rgba(214,178,91,.30);
+    background: rgba(0,0,0,.25);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    cursor:pointer;
+    font-size: 18px;
+    font-weight: 900;
+    display:grid;
+    place-items:center;
+    transition:.15s ease;
+    user-select:none;
+  }
+  .close:hover{
+    transform: translateY(-1px);
+    border-color: rgba(214,178,91,.55);
+  }
+
+  .modal-body{
+    padding: 14px 16px 18px;
+  }
+  .modal-body p{
+    margin: 0 0 10px;
+    color: rgba(255,255,255,.92);
+    line-height:1.65;
+    font-size: 14px;
+  }
+
+  .kpy{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin: 6px 0 14px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(214,178,91,.22);
+    background: rgba(0,0,0,.22);
+    font-size: 12px;
+    color: rgba(255,255,255,.88);
+    font-weight: 800;
+    letter-spacing: .2px;
+  }
+  .kpy b{ color: var(--gold-2); }
+
+  .subttl{
+    margin: 14px 0 8px;
+    font-size: 12px;
+    letter-spacing: .35px;
+    text-transform: uppercase;
+    color: var(--gold-2);
+    font-weight: 1000;
+  }
+
+  .q{
+    border: 1px dashed rgba(214,178,91,.28);
+    background: rgba(0,0,0,.18);
+    border-radius: 14px;
+    padding: 10px 10px;
+    margin-bottom: 8px;
+    color: rgba(255,255,255,.90);
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  
+  .logo-golden{
+  display: block;
+  height: auto;
+  max-height: 40px;   /* ✅ ALTURA DO CABEÇALHO */
+  width: auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <img 
+      src="646a811a-e562-4d7e-8b2d-4948001f2750.png"
+      alt="Golden Rules"
+      class="logo-golden"
+    />
+  </div>
+</div>
+
+  <div class="hero" aria-label="Capa"></div>
+
+  <main class="wrap">
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <!-- Modal -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalH2">
+      <div class="modal-head">
+        <div class="modal-title">
+          <div class="nbox" id="modalN">1</div>
+          <div>
+            <h2 id="modalH2"></h2>
+            <span class="small" id="modalLead"></span>
+          </div>
+        </div>
+        <button class="close" id="btnClose" aria-label="Fechar">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+<script>
+  const rules = [
+    { n: 1,  title: "Resultado com consistência",                       lead: "Resultado com consistência é primordial.",                                              kpy: "MOB/MOL/BAI",
+      paragraphs: [
+        "Estamos aqui para entregar o potencial de resultado de São Paulo em todas as dimensões (Lojas, Select, B1 e GIU). Cada Território deve ser uma fonte relevante de geração de negócios, com atuação consistente nos cinco Territórios da Rede SP. Somos sócios em cada um deles.",
+        "O resultado é a somatória da entrega de cada um, potencializado pela sinergia e cross sell do Teritório. A entrega tem que ser coletiva. Andar em bloco. A Rede precisa entregar crescimento de dois dígitos. Puxar o resultado do Varejo.",
+        "A economia de São Paulo cresceu 5,8% em 2024, acima do PIB nacional (3,4%) e concentra 32% da massa de rendimentos nacional. Único estado do Sudeste a acelerar o ritmo de crescimento. Expansão sustentada por indústria de transformação e serviços.",
+        "O estado concentra 32% da massa de rendimentos nacional com 22% da população.",
+        "Destaque para a Região Metropolitana de São Paulo que corresponde a 19% da renda total do Brasil com 10% da população e 22,5% do Crédito PF.",
+        "O Varejo Total possui 5,7 trilhões de reais de investimentos, sendo que a Região Metropolitana de São Paulo (RMSP) concentra 25%. Isso representa muita oportunidade de negócios em todos as áreas e, obviamente, muita concorrência. Por isso não podemos errar com o cliente.",
+        "Entrega de resultado é autonomia e liberdade para tocarmos o nosso negócio do nosso jeito.",
+        "Faremos os Business Review consistentemente todo fechamento de mês. Rede com Heads. Heads com Lideres. Lideres com Regionais. Acompanhando evolução da dispersão, produção, evolução de carteira e resultado. Todo mês a gente precisa mudar de patamar."
+      ],
+      questions: [
+        "Onde está a maior oportunidade do seu território hoje?",
+        "O que estamos deixando na mesa por falta de processo ou disciplina?",
+        "Sua rotina atual realmente produz consistência ou apenas esforço não direcionado?"
+      ]
+    },
+
+    { n: 2,  title: "Propósito em tudo o que faço",                     lead: "Atuação com propósito: educação e consultoria financeira.",                               kpy: "YourVoice e Turnover",
+      paragraphs: [
+        "Nós somos vendedores. Mas a nossa atuação e o nosso propósito é educação e consultoria financeira com foco nos clientes.",
+        "Estamos aqui para ajudar pessoas e empresas a encontrarem as melhores soluções de crédito e as melhores formas de proteger e rentabilizar seu patrimônio. Isso garante prosperidade no momento certo.",
+        "O cliente é o centro e nosso NPS deve estar nos níveis que buscamos alcançar. O time precisa estar engajado no nosso propósito. Para andarmos em bloco."
+      ],
+      questions: [
+        "O cliente sai da interação melhor do que entrou?",
+        "Estamos entregando clareza ou complexidade?",
+        "Seu time fala de propósito com a mesma força que fala de metas?"
+      ]
+    },
+
+    { n: 3,  title: "Liderança que impacta e mobiliza",                 lead: "Liderança é uma escolha diária — inspirar, engajar e desenvolver.",                       kpy: "YourVoice e Turnover",
+      paragraphs: [
+        "Todo negócio é feito de/por pessoas e a liderança é uma escolha diária. E nós escolhemos estar aqui.",
+        "Como líderes, conduzimos o time, contratamos certo, preparamos e capacitamos para que todos aproveitem as oportunidades de negócio da Rede.",
+        "A liderança deve inspirar, engajar e desenvolver. Contratar certo, orientar certo e manter o time preparado é o que nos permite crescer com consistência.",
+        "E lembre-se: Decisões difíceis fazem o futuro mais fácil e líder só mobiliza e engaja com conhecimento/repertório/boa comunicação."
+      ],
+      questions: [
+        "Esse talento é a pessoa certa para o futuro da área, não só para o presente?",
+        "O que fiz, como líder, para que essa pessoa pudesse performar melhor essa semana?",
+        "Se eu fosse liderado por mim, eu estaria engajado?",
+        "Quantas conversas difíceis adiei este mês?",
+        "Meu time me vê como referência técnica, cultural e humana ou só como cobrador de metas?"
+      ]
+    },
+
+    { n: 4,  title: "Obsessão com disciplina",                          lead: "Oriente com clareza, pergunte e acompanhe indicadores — foco em causa, não só efeito.",   kpy: "Aderência ao modelo comercial / Mais Certo",
+      paragraphs: [
+        "Oriente com clareza, faça perguntas e acompanhe indicadores mensalmente. Comunicação clara evita interpretações equivocadas.",
+        "O líder não opera o resultado, ele conduz o processo. E pressão sem orientação não gera resultado sustentável.",
+        "Precisamos dominar o processo para liberar o potencial do time e direcionar as ações corretas. Falar, priorizar e orientar a organização garante evolução contínua.",
+        "Focar apenas no “efeito” (o resultado que ainda não veio) não resolve o que precisa ser atacado na “causa”. Resultado comercial é engenharia.",
+        "Cobrar número pelo número não transforma ninguém. Ensinar o processo transforma o time.",
+        "É necessário pensamento crítico para melhorar continuamente e entender onde estão as oportunidades de evolução nos produtos, processos e incentivos, sempre olhando para a entrega do potencial.",
+        "Nossa atuação deve priorizar o que precisa ser feito e incentivar o time a falar (speak up) e evoluir de forma consciente.",
+        "Business Review todos os meses."
+      ],
+      questions: [
+        "Minha comunicação está clara?",
+        "O que da nossa rotina comercial está quebrado hoje e por que ainda não foi corrigido?",
+        "Minha comunicação está clara ou gera ruído?",
+        "Quais indicadores eu deveria parar de olhar e quais deveria olhar todos os dias?",
+        "O time entende o processo ou apenas executa tarefas?"
+      ]
+    },
+
+    { n: 5,  title: "Atalhos não são uma opção",                        lead: "O que você tolera define o padrão do time — transparência e respeito sempre.",            kpy: "Venda Certa / IQ",
+      paragraphs: [
+        "O que você tolera define o padrão do time. Com respeito você deve sempre dizer a verdade e ser transparente.",
+        "O que você tolera está dizendo para todo o time “eu aceito isso”. Não existe espaço para decisões que prejudiquem o cliente, a operação ou o negócio.",
+        "Um negócio é sustentável quando é bom para o cliente, para o profissional e para o acionista. Não tem jeito certo de fazer o errado.",
+        "Foque no que gera valor. Use a “capacity” do time no que gera valor.",
+        "Confiança do time é essencial para enxergar o que realmente acontece no dia a dia. Se o time não confiar em você, ele não vai te trazer os problemas que você precisa resolver.",
+        "E como líderes somos 100% responsáveis pelo que acontece na nossa operação. Acompanhe os números, os outliers. E retroalimente o ecossistema."
+      ],
+      questions: [
+        "Se eu tolerar isso hoje, estou disposto a viver com isso como padrão?",
+        "O time realmente confia em mim a ponto de trazer problemas antes que virem crises?",
+        "Onde há risco reputacional que não está sendo discutido?",
+        "Quais comportamentos eu elogio que não deveria, e quais eu deveria reforçar mais?"
+      ]
+    },
+
+    { n: 6,  title: "Praticidade e otimização do tempo",                lead: "Foque no que muda o ponteiro — priorize impacto, saúde mental e equilíbrio.",            kpy: "—",
+      paragraphs: [
+        "Foque no que realmente muda o ponteiro. Nosso tempo é limitado e precisa ser utilizado de forma inteligente, priorizando performance, entregas, saúde mental e equilíbrio.",
+        "Seu foco é mobilizar, desenvolver as equipes e colocar a atividade comercial no ritmo planejado.",
+        "Use as áreas centrais, os especialistas e staff como suporte para entregar o que é importante.",
+        "Automatize atividades com apoio de ferramentas fornecidas pela organização (Dashs, Copilot, ChatGPT Plus etc.).",
+        "Se questione todos os dias se esta fazendo o que é importante. Não temos tempo para desperdiçar."
+      ],
+      questions: [
+        "O que eu preciso acelerar?",
+        "O que eu preciso parar de fazer imediatamente?",
+        "O que preciso começar a fazer que realmente gere impacto?",
+        "Quantas das minhas atividades semanais poderiam ser feitas por outra pessoa ou por uma ferramenta?"
+      ]
+    },
+
+    { n: 7,  title: "Execução impecável",                               lead: "Rapidez com cuidado nos detalhes que importam — excelência vira valor.",                  kpy: "—",
+      paragraphs: [
+        "Avançar com rapidez, porém sem perder cuidado com os detalhes que importam. É durante o processo que garantiremos qualidade no resultado.",
+        "Traduzir complexidade em clareza, pressão em foco e planejamento em resultado.",
+        "Não deixar que tudo seja tratado como prioridade e garantir que a prioridade seja traduzida em resultado em impacto real.",
+        "Cuide dos detalhes que impactam o cliente. A experiência tem que ser “uau” sempre. Seja o exemplo.",
+        "Todas as mudanças feitas não vão gerar valor. A Execução impecável vai."
+      ],
+      questions: [
+        "Que detalhe ignorado hoje pode virar um problema amanhã?",
+        "O que na minha execução demonstra excelência e o que revela improviso?",
+        "Onde está o gargalo real do processo e por que ele ainda existe?",
+        "Estou traduzindo prioridades em entregas ou apenas repassando pressão?",
+        "Como eu sei que meu cliente teve uma experiência “uau”?"
+      ]
+    },
+
+    { n: 8,  title: "Barra alta sempre",                                lead: "Padrão elevado, ambição relevante e repertório constante.",                               kpy: "—",
+      paragraphs: [
+        "Devemos nos desafiar continuamente, mantendo padrões elevados de atuação e execução. Dado o tamanho do negócio que tocamos, nossa barra precisa seguir a mesma dimensão; nos negócios, ter ambições relevantes.",
+        "Modelo de Incentivos ou orçamento não podem ser o balizador; precisamos atuar pelo potencial da praça e ter os concorrentes como parâmetro.",
+        "Somos os “CEOs” do Território. Obrigatório dominar o mercado, a concorrência, o potencial de negócio da praça como um todo, os talentos do mercado que podemos contratar.",
+        "Enquanto líderes, desenvolver o repertório e estar em constante atualização. Se atualize constantemente e mostre isso para o time. O Exemplo arrasta.",
+        "Nossa capacidade de mobilização se dará pela forma humana de conduzir o time mas também pela capacidade e repertório técnico-cultural que formos capazes de compartilhar."
+      ],
+      questions: [
+        "Estou fazendo as provocações certas? O time responde?",
+        "O que eu estudei ou aprendi esta semana que me tornou um líder melhor?",
+        "Quem são os melhores talentos do mercado que eu deveria estar monitorando?",
+        "Meu time acredita que a barra é alta ou que ela é inalcançável?",
+        "Em quais temas técnicos eu ainda não sou referência, mas deveria ser?"
+      ]
+    },
+
+    { n: 9,  title: "Cultura é o comportamento da liderança",           lead: "A cultura se consolida pelo exemplo — ego fica em casa.",                                 kpy: "—",
+      paragraphs: [
+        "A cultura organizacional se consolida pelo exemplo. A forma como lideramos define, na prática, como a Rede funciona e se desenvolve.",
+        "Todos somos um. O ego fica em casa. A cultura é a fundação para todo o resto. Sem cultura forte, não tem entrega de resultado consistente."
+      ],
+      questions: [
+        "Se todos se comportassem como eu me comportei essa semana, onde estaríamos?",
+        "Quais comportamentos meus estão reforçando a cultura desejada?",
+        "Onde estou criando cultura sem perceber?",
+        "Quais mensagens não ditas eu comunico pelo meu comportamento?",
+        "Em que momento recente eu coloquei o time acima do meu ego?"
+      ]
+    },
+
+    { n: 10, title: "Fazer muito, sempre certo e curtir a jornada",     lead: "Excelência com energia positiva — celebrar e evoluir.",                                  kpy: "—",
+      paragraphs: [
+        "Produzir com excelência, da forma correta e com energia positiva ao longo do caminho fortalece o negócio, o time e a experiência dentro da Rede.",
+        "Comemorar os negócios importantes."
+      ],
+      questions: [
+        "Quando foi a última vez que comemorei uma entrega relevante com o time?",
+        "O que faço diariamente que inspira o time a “curtir a jornada”?",
+        "Trabalho duro ou trabalho inteligente?",
+        "Estou operando no modo excelência ou no modo urgência permanente?",
+        "Se a jornada não está leve, o que eu posso mudar?"
+      ]
+    }
+  ];
+
+  const grid = document.getElementById("grid");
+
+  /* Cards: apenas número + título (sem lead) */
+  grid.innerHTML = rules.map((r, idx) => `
+    <article class="card" data-i="${idx}" tabindex="0" role="button" aria-label="Abrir item ${r.n}">
+      <div class="head">
+        <div class="n">${r.n}</div>
+        <h3 class="title">${escapeHtml(r.title)}</h3>
+      </div>
+    </article>
+  `).join("");
+
+  // Modal refs
+  const overlay = document.getElementById("overlay");
+  const modal = document.getElementById("modal");
+  const btnClose = document.getElementById("btnClose");
+  const modalN = document.getElementById("modalN");
+  const modalH2 = document.getElementById("modalH2");
+  const modalLead = document.getElementById("modalLead");
+  const modalBody = document.getElementById("modalBody");
+  let lastFocusEl = null;
+
+  function openModal(i){
+    const r = rules[i];
+    if(!r) return;
+
+    lastFocusEl = document.activeElement;
+
+    modal.scrollTop = 0;
+    modalBody.scrollTop = 0;
+
+    modalN.textContent = r.n;
+    modalH2.textContent = r.title;
+    modalLead.textContent = r.lead;
+
+    const kpyHtml = (r.kpy && r.kpy !== "—")
+      ? `<div class="kpy"><b>KPY:</b> ${escapeHtml(r.kpy)}</div>`
+      : ``;
+
+    const paragraphs = r.paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join("");
+    const questions = r.questions.map(q => `<div class="q">${escapeHtml(q)}</div>`).join("");
+
+    modalBody.innerHTML = `
+      ${kpyHtml}
+      ${paragraphs}
+      <div class="subttl">Perguntas-chave</div>
+      ${questions}
+    `;
+
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+
+    requestAnimationFrame(()=> { modal.scrollTop = 0; });
+
+    btnClose.focus();
+  }
+
+  function closeModal(){
+    overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+    modalBody.innerHTML = "";
+
+    if(lastFocusEl && typeof lastFocusEl.focus === "function"){
+      lastFocusEl.focus();
+    }
+  }
+
+  grid.addEventListener("click", (e)=>{
+    const card = e.target.closest(".card");
+    if(!card) return;
+    openModal(Number(card.getAttribute("data-i")));
+  });
+
+  grid.addEventListener("keydown", (e)=>{
+    if(e.key !== "Enter" && e.key !== " ") return;
+    const card = e.target.closest(".card");
+    if(!card) return;
+    e.preventDefault();
+    openModal(Number(card.getAttribute("data-i")));
+  });
+
+  btnClose.addEventListener("click", closeModal);
+
+  overlay.addEventListener("click", (e)=>{
+    if(e.target === overlay) closeModal();
+  });
+
+  document.addEventListener("keydown", (e)=>{
+    if(e.key === "Escape" && overlay.classList.contains("open")){
+      closeModal();
+    }
+  });
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+</script>
+</body>
+</html>
