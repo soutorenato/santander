@@ -1397,6 +1397,7 @@ ${bensTexto}`;
         const observacoesGerais = document.getElementById('observacoesGerais').value.trim() || '-';
 
         baseTexto = `Diagnóstico Consultivo — Seguro Vida Vitalício
+
 Cliente: ${nome}
 CPF: ${cpf}
 
@@ -1407,14 +1408,18 @@ Observações gerais:
 ${observacoesGerais}`;
       }
 
-      const complementoAgenda = `
-Agenda para acompanhamento:
+      const agendaTexto = `Agenda para acompanhamento:
+
 1ª reunião agendada no Teams: ${data1 ? formatDateBR(data1) : '-'}${hora1 ? ' às ' + hora1 : ''}
 2ª reunião registrada para acompanhamento: ${data2 ? formatDateBR(data2) : '-'}${hora2 ? ' às ' + hora2 : ''}`;
 
-      return `${baseTexto}
+      const textoCompleto = `${baseTexto}
 
-${complementoAgenda}`;
+${agendaTexto}`;
+
+      return textoCompleto.replace(/
+/g, '
+');
     }
 
     function abrirAgendamentoTeams(){
