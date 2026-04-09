@@ -1417,9 +1417,7 @@ ${observacoesGerais}`;
 
 ${agendaTexto}`;
 
-      return textoCompleto.replace(/
-/g, '
-');
+      return textoCompleto.split(String.fromCharCode(10)).join(String.fromCharCode(13) + String.fromCharCode(10));
     }
 
     function abrirAgendamentoTeams(){
