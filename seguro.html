@@ -962,7 +962,7 @@
       </div>
       <div class="modal-body">
         <div class="tip-box">
-          Aqui ficam salvas as indicações registradas nesta página. Você pode acompanhar o status, editar quando necessário e baixar a tabela em Excel. Ao cadastrar a indicação, a página também abre a tela de agendamento no Teams já preenchida.
+          Aqui ficam salvas as indicações registradas nesta página. Você pode acompanhar o status, editar quando necessário e baixar a tabela em Excel. Ao cadastrar a indicação, a página mantém o acompanhamento aberto e também abre o agendamento no Teams em outra aba, já preenchido.
         </div>
         <div class="actions-row" style="margin-top:16px;">
           <button class="primary-btn" type="button" onclick="cadastrarIndicacao(false)"><i class="fi fi-tr-plus"></i> Cadastrar cliente atual</button>
@@ -1382,27 +1382,39 @@ ${bensTexto}`;
     }
 
     function montarMensagemAgendamento(){
-      const nome = document.getElementById('nomeCliente').value.trim() || '-';
-      const cpf = document.getElementById('cpfCliente').value.trim() || '-';
-      const resumoFamilia = document.getElementById('resumoFamilia').value.trim() || '-';
-      const observacoesGerais = document.getElementById('observacoesGerais').value.trim() || '-';
       const data1 = document.getElementById('dataReuniao1').value;
       const hora1 = document.getElementById('horaReuniao1').value;
       const data2 = document.getElementById('dataReuniao2').value;
       const hora2 = document.getElementById('horaReuniao2').value;
 
-      return `Cliente: ${nome}
+      let baseTexto = '';
+      if (resultado.dataset.resumo) {
+        baseTexto = resultado.dataset.resumo;
+      } else {
+        const nome = document.getElementById('nomeCliente').value.trim() || '-';
+        const cpf = document.getElementById('cpfCliente').value.trim() || '-';
+        const resumoFamilia = document.getElementById('resumoFamilia').value.trim() || '-';
+        const observacoesGerais = document.getElementById('observacoesGerais').value.trim() || '-';
+
+        baseTexto = `Diagnóstico Consultivo — Seguro Vida Vitalício
+Cliente: ${nome}
 CPF: ${cpf}
 
 Resumo familiar:
 ${resumoFamilia}
 
 Observações gerais:
-${observacoesGerais}
+${observacoesGerais}`;
+      }
 
-Agenda registrada:
-1ª reunião: ${data1 ? formatDateBR(data1) : '-'}${hora1 ? ' às ' + hora1 : ''}
-2ª reunião: ${data2 ? formatDateBR(data2) : '-'}${hora2 ? ' às ' + hora2 : ''}`;
+      const complementoAgenda = `
+Agenda para acompanhamento:
+1ª reunião agendada no Teams: ${data1 ? formatDateBR(data1) : '-'}${hora1 ? ' às ' + hora1 : ''}
+2ª reunião registrada para acompanhamento: ${data2 ? formatDateBR(data2) : '-'}${hora2 ? ' às ' + hora2 : ''}`;
+
+      return `${baseTexto}
+
+${complementoAgenda}`;
     }
 
     function abrirAgendamentoTeams(){
@@ -1436,7 +1448,7 @@ Agenda registrada:
 
       const url = `https://teams.microsoft.com/l/meeting/new?subject=${encodeURIComponent(subject)}&startTime=${encodeURIComponent(startIso)}&endTime=${encodeURIComponent(endIso)}&content=${encodeURIComponent(content)}${attendees ? `&attendees=${encodeURIComponent(attendees)}` : ''}`;
 
-      window.location.href = url;
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
 
     function abrirModalIndicacoes(){
@@ -1503,6 +1515,7 @@ Agenda registrada:
       }
 
       salvarIndicacoes(lista);
+      abrirModalIndicacoes();
       renderIndicacoes();
 
       if(abrirAgendamento){
