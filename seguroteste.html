@@ -962,7 +962,7 @@
       </div>
       <div class="modal-body">
         <div class="tip-box">
-          Aqui ficam salvas as indicações registradas nesta página. Você pode acompanhar o status, editar quando necessário e baixar a tabela em Excel. Ao cadastrar a indicação, a página mantém o acompanhamento aberto, abre o agendamento no Teams em outra aba e também abre o Microsoft Forms com nome e CPF já preenchidos.
+          Aqui ficam salvas as indicações registradas nesta página. Você pode acompanhar o status, editar quando necessário e baixar a tabela em Excel. Ao cadastrar a indicação, a página mantém o acompanhamento aberto, abre o agendamento no Teams em outra aba e também abre o Microsoft Forms com nome e CPF já preenchidos, usando o link base do formulário em forms.office.com.
         </div>
         <div class="actions-row" style="margin-top:16px;">
           <button class="primary-btn" type="button" onclick="cadastrarIndicacao(false)"><i class="fi fi-tr-plus"></i> Cadastrar cliente atual</button>
@@ -1459,7 +1459,7 @@ ${agendaTexto}`;
       const nome = document.getElementById('nomeCliente').value.trim() || '';
       const cpf = document.getElementById('cpfCliente').value.trim() || '';
 
-      const baseUrl = 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=AlpZNW1NrESZ4fmrTNhy27mK6D8libtN1XYkzO4nbRdUNjJXSk9YW1NBRTFLU0pRSzdTUjc2M0I2OS4u';
+      const baseUrl = 'https://forms.office.com/pages/responsepage.aspx?id=AlpZNW1NrESZ4fmrTNhy281i7MyKmT1LqP1xKrlqOjdUMEQ4S1lHVUVLN1pKSTFYR0JJRjIyU0pYWC4u';
       const url = baseUrl
         + '&r403d16ea77594904adae0b5361894133=' + encodeURIComponent(nome)
         + '&r786990da9ca94014aed95095fc730d11=' + encodeURIComponent(cpf);
